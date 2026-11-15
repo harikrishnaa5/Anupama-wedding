@@ -1,85 +1,129 @@
 import wedding from '../config/wedding'
-import { BotanicalSpray, LeafCorner, OrnamentDivider } from './BotanicalDecor'
 
 export default function Hero() {
-  const { couple, messages, displayDate, venue, photos } = wedding
-  const hasHeroPhoto = Boolean(photos.hero)
+  const { couple, messages, displayDate, photos } = wedding
+  const heroImage = photos.hero || '/images/1000333731.jpg'
+  const alt = `${couple.partnerOne} and ${couple.partnerTwo}`
 
   return (
-    <section className="relative flex min-h-[100svh] flex-col overflow-hidden bg-ivory">
-      <div
-        className="pointer-events-none absolute inset-0"
+    <section className="relative h-[100svh] w-full overflow-hidden bg-[#c8c8c8]">
+      {/* Desktop base fill — smaller blurred photo is enough */}
+      <img
+        src={heroImage}
+        alt=""
         aria-hidden="true"
+        className="absolute inset-0 hidden h-full w-full object-cover object-[center_22%] blur-[80px] md:block"
+        style={{ transform: 'scale(1.45)' }}
+      />
+
+      {/*
+        Left-only fill: locked to the photo's bright left studio wall
+        so the seam beside her hair disappears.
+      */}
+      <img
+        src={heroImage}
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 hidden h-full w-full object-cover object-[8%_30%] blur-[90px] md:block"
+        style={{
+          transform: 'scale(1.55)',
+          WebkitMaskImage:
+            'linear-gradient(to right, black 0%, black 55%, transparent 100%)',
+          maskImage:
+            'linear-gradient(to right, black 0%, black 55%, transparent 100%)',
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-y-0 left-0 hidden w-[42%] md:block"
         style={{
           background:
-            'radial-gradient(ellipse 80% 55% at 50% 0%, #FDFCF9 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 85% 90%, rgba(165,173,153,0.18) 0%, transparent 55%)',
+            'linear-gradient(to right, #d6d6d6 0%, #d0d0d0 35%, rgba(208,208,208,0.45) 70%, transparent 100%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Mobile: full-bleed cover */}
+      <img
+        src={heroImage}
+        alt={alt}
+        className="absolute inset-0 h-full w-full object-cover object-[center_18%] md:hidden"
+        loading="eager"
+        decoding="async"
+      />
+
+      {/*
+        Desktop sharp photo — zoomed out a bit more so faces sit above the text.
+        Soft left feather into the studio fill.
+      */}
+      <img
+        src={heroImage}
+        alt={alt}
+        className="absolute left-1/2 top-0 z-[1] hidden max-w-none -translate-x-1/2 md:block"
+        loading="eager"
+        decoding="async"
+        style={{
+          height: '148%',
+          width: 'auto',
+          top: '-10%',
+          opacity: 0.9,
+          WebkitMaskImage:
+            'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 6%, rgba(0,0,0,0.45) 14%, rgba(0,0,0,0.8) 24%, black 34%, black 93%, transparent 100%)',
+          maskImage:
+            'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.15) 6%, rgba(0,0,0,0.45) 14%, rgba(0,0,0,0.8) 24%, black 34%, black 93%, transparent 100%)',
         }}
       />
 
-      <LeafCorner className="botanical-drift pointer-events-none absolute left-2 top-3 h-16 w-16 text-sage/65 sm:left-4 sm:top-5 sm:h-20 sm:w-20 md:left-8 md:top-8 md:h-28 md:w-28" />
-      <LeafCorner
-        flip
-        className="botanical-drift pointer-events-none absolute right-2 top-3 h-16 w-16 text-sage/65 sm:right-4 sm:top-5 sm:h-20 sm:w-20 md:right-8 md:top-8 md:h-28 md:w-28"
-        style={{ animationDelay: '1.5s' }}
+      {/* Desktop overall dim — keeps white type readable */}
+      <div
+        className="pointer-events-none absolute inset-0 z-[2] hidden bg-black/15 md:block"
+        aria-hidden="true"
       />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 pb-6 pt-12 sm:px-6 sm:pt-16 md:px-10 md:pb-10 md:pt-20">
-        <div className="flex flex-1 flex-col border border-champagne/60 px-4 py-7 sm:px-8 sm:py-10 md:px-12 md:py-14">
-          <div className="flex flex-1 flex-col items-center text-center">
-            <p className="editorial-label hero-enter hero-enter-1">
-              {messages.intro}
+      {/*
+        Gradient opacity from where text begins → bottom.
+        Starts soft at the top of the text band, strongest at the bottom.
+      */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[36%] sm:h-[34%] md:h-[32%]"
+        style={{
+          background:
+            'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.28) 22%, rgba(0,0,0,0.55) 55%, rgba(0,0,0,0.78) 78%, rgba(0,0,0,0.9) 100%)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Text — no container, sits over the bottom gradient */}
+      <div className="absolute inset-x-0 bottom-0 z-10 px-6 pb-6 sm:px-10 sm:pb-8 md:pb-9">
+        <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+          <p className="editorial-label hero-enter hero-enter-1 !text-[#F8F6F0] drop-shadow-[0_1px_8px_rgba(0,0,0,0.55)]">
+            {messages.intro}
+          </p>
+
+          <div className="hero-enter hero-enter-2 mt-2 sm:mt-2.5">
+            <h1 className="font-display text-[2.1rem] font-medium leading-[0.95] tracking-tight text-white sm:text-4xl md:text-5xl">
+              {couple.partnerOne}
+            </h1>
+            <p className="mt-0.5 font-display text-base italic font-normal text-champagne sm:text-lg md:text-xl">
+              weds
             </p>
-
-            <OrnamentDivider className="hero-enter hero-enter-1 mt-4 text-champagne sm:mt-6" />
-
-            <div className="hero-enter hero-enter-2 mt-5 sm:mt-8 md:mt-10">
-              <h1 className="font-display text-[3rem] font-medium leading-[0.95] tracking-tight text-charcoal sm:text-7xl md:text-8xl">
-                {couple.partnerOne}
-              </h1>
-              <p className="mt-1 font-display text-xl italic font-normal text-warm-gray sm:mt-2 sm:text-2xl md:text-3xl">
-                weds
-              </p>
-              <h1 className="mt-0.5 font-display text-[3rem] font-medium leading-[0.95] tracking-tight text-charcoal sm:text-7xl md:text-8xl">
-                {couple.partnerTwo}
-              </h1>
-            </div>
-
-            <div className="hero-enter hero-enter-3 mt-5 sm:mt-8 md:mt-10">
-              <p className="editorial-label text-champagne">Save the Date</p>
-              <p className="mt-3 max-w-sm font-display text-base italic leading-relaxed text-warm-gray sm:mt-4 sm:text-lg md:text-xl">
-                {messages.tagline}
-              </p>
-            </div>
-
-            {hasHeroPhoto ? (
-              <div className="hero-enter hero-enter-4 mt-5 w-full max-w-md overflow-hidden sm:mt-8 md:mt-10">
-                <img
-                  src={photos.hero}
-                  alt={`${couple.partnerOne} and ${couple.partnerTwo}`}
-                  className="aspect-[4/5] w-full object-cover"
-                />
-              </div>
-            ) : (
-              <div className="hero-enter hero-enter-4 mt-5 w-full max-w-[14rem] sm:mt-8 sm:max-w-xs md:mt-10">
-                <BotanicalSpray className="mx-auto h-8 w-full text-sage/50 sm:h-12" />
-              </div>
-            )}
-
-            <div className="hero-enter hero-enter-5 mt-auto pt-6 sm:pt-10">
-              <p className="font-display text-lg tracking-wide text-charcoal sm:text-xl md:text-2xl">
-                {displayDate.date} {displayDate.month} {displayDate.year}
-              </p>
-              <p className="mt-1.5 font-body text-xs tracking-wide text-warm-gray sm:mt-2 sm:text-sm">
-                {venue.name}
-              </p>
-            </div>
+            <h1 className="mt-0.5 font-display text-[2.1rem] font-medium leading-[0.95] tracking-tight text-white sm:text-4xl md:text-5xl">
+              {couple.partnerTwo}
+            </h1>
           </div>
-        </div>
 
-        <div className="hero-enter hero-enter-6 mt-5 flex flex-col items-center gap-1.5 sm:mt-8 sm:gap-2">
-          <span className="editorial-label text-[0.6rem]">Scroll</span>
-          <div className="scroll-indicator flex h-7 w-3.5 items-start justify-center rounded-full border border-champagne/80 pt-1 sm:h-8 sm:w-4 sm:pt-1.5">
-            <span className="h-1.5 w-0.5 rounded-full bg-warm-gray" />
+          <div className="hero-enter hero-enter-3 mt-3 flex items-center gap-4 sm:mt-3.5 sm:gap-5">
+            <span className="h-px w-10 bg-champagne sm:w-14" aria-hidden="true" />
+            <p className="font-body text-[0.7rem] font-medium uppercase tracking-[0.28em] text-white sm:text-xs">
+              {displayDate.date} {displayDate.month} {displayDate.year}
+            </p>
+            <span className="h-px w-10 bg-champagne sm:w-14" aria-hidden="true" />
+          </div>
+
+          <div className="hero-enter hero-enter-4 mt-3 flex flex-col items-center gap-1.5 sm:mt-3.5">
+            <span className="editorial-label !text-white/60 text-[0.55rem]">
+              Scroll to explore
+            </span>
+            <div className="scroll-indicator h-5 w-px bg-white/45" aria-hidden="true" />
           </div>
         </div>
       </div>

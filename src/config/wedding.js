@@ -9,14 +9,14 @@ const wedding = {
   },
 
   // ISO date string (YYYY-MM-DD). Leave empty to hide countdown.
-  dateISO: '2026-12-15',
+  dateISO: '2027-01-09',
   time: '11:00 AM',
   timeISO: '11:00', // 24h for Date parsing
   displayDate: {
-    day: 'Tuesday',
-    date: '15',
-    month: 'December',
-    year: '2026',
+    day: 'Saturday',
+    date: '09',
+    month: 'January',
+    year: '2027',
   },
 
   venue: {
@@ -26,7 +26,7 @@ const wedding = {
   },
 
   messages: {
-    intro: 'Together with their families',
+    intro: 'Together with our families',
     tagline: 'A beautiful beginning, a lifetime of togetherness.',
     invitationHeading: 'Love brings us together',
     invitationBody:
@@ -37,9 +37,12 @@ const wedding = {
 
   // Place couple photographs in /public/images/ and list paths here.
   photos: {
-    hero: '',
-    featured: '/images/1000333731.jpg',
-    secondary: ['/images/1000333729.jpg', '/images/1000333730.jpg'],
+    // Hero full-bleed background
+    hero: '/images/1000333731.jpg',
+    // Countdown / moments featured image
+    featured: '/images/1000333729.jpg',
+    // Gallery supporting images
+    secondary: ['/images/1000333730.jpg', '/images/1000333731.jpg'],
   },
 
   music: {

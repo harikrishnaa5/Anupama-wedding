@@ -11,6 +11,7 @@ function PhotoFrame({ src, alt, className = '', aspect = 'aspect-[4/5]' }) {
           alt={alt}
           className="h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-[1.03]"
           loading="lazy"
+          decoding="async"
         />
       </div>
     )
@@ -35,7 +36,12 @@ function PhotoFrame({ src, alt, className = '', aspect = 'aspect-[4/5]' }) {
 
 export default function Gallery() {
   const { photos, couple } = wedding
-  const [second = '', third = ''] = photos.secondary || []
+  // Prefer secondary photos here; featured is used on the countdown page
+  const [large = '', smallA = '', smallB = ''] = [
+    ...(photos.secondary || []),
+    photos.hero,
+    photos.featured,
+  ].filter(Boolean)
 
   return (
     <section className="relative overflow-hidden bg-ivory">
@@ -54,7 +60,7 @@ export default function Gallery() {
             className="col-span-12 md:col-span-7"
           >
             <PhotoFrame
-              src={photos.featured}
+              src={large}
               alt={`${couple.partnerOne} & ${couple.partnerTwo} — featured`}
               aspect="aspect-[4/5] md:aspect-[3/4]"
             />
@@ -63,14 +69,14 @@ export default function Gallery() {
           <div className="col-span-12 flex flex-col gap-4 md:col-span-5 md:gap-6 md:pt-16">
             <Reveal delay={1} variant="reveal-scale">
               <PhotoFrame
-                src={second}
+                src={smallA}
                 alt={`${couple.partnerOne} & ${couple.partnerTwo} — memory`}
                 aspect="aspect-[4/5]"
               />
             </Reveal>
             <Reveal delay={2} variant="reveal-scale">
               <PhotoFrame
-                src={third}
+                src={smallB}
                 alt={`${couple.partnerOne} & ${couple.partnerTwo} — memory`}
                 aspect="aspect-[4/5]"
               />

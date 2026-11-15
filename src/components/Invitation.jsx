@@ -1,62 +1,77 @@
+import { ArrowRight, Clock } from 'lucide-react'
 import wedding from '../config/wedding'
 import Reveal from './Reveal'
-import { LeafCorner } from './BotanicalDecor'
+import { BotanicalSpray } from './BotanicalDecor'
 
 export default function Invitation() {
-  const { messages } = wedding
+  const { messages, displayDate, time, venue } = wedding
 
   return (
     <section className="relative overflow-hidden bg-soft-white">
-      <div
-        className="pointer-events-none absolute -right-8 top-16 h-40 w-40 text-sage/40 md:right-10 md:h-52 md:w-52"
-        aria-hidden="true"
-      >
-        <LeafCorner className="botanical-drift h-full w-full" flip />
-      </div>
-
-      <div className="relative mx-auto grid max-w-5xl gap-10 px-6 py-20 md:grid-cols-12 md:gap-8 md:px-10 md:py-28">
-        {/* Asymmetric left column — oversized label + botanical panel */}
-        <Reveal className="md:col-span-5 md:pt-6">
-          <p className="editorial-label mb-6">The Invitation</p>
-          <div className="relative aspect-[3/4] max-w-sm overflow-hidden bg-beige/60 md:max-w-none">
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(160deg, #EAE5DA 0%, #F8F6F0 45%, #E8EBE4 100%)',
-              }}
-            />
-            <div className="absolute inset-6 border border-champagne/50" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
-              <LeafCorner className="mb-6 h-16 w-16 text-sage/60" />
-              <p className="font-display text-3xl italic leading-snug text-charcoal/80">
-                With joy
-                <br />
-                &amp; gratitude
-              </p>
-              <span className="mt-8 h-px w-12 bg-champagne" />
-            </div>
-          </div>
+      <div className="mx-auto max-w-xl px-6 py-20 text-center md:px-10 md:py-28">
+        <Reveal>
+          <BotanicalSpray className="mx-auto mb-8 h-10 w-44 text-champagne/70" />
+          <p className="editorial-label text-champagne">The Invitation</p>
         </Reveal>
 
-        {/* Right — editorial message */}
-        <div className="flex flex-col justify-center md:col-span-7 md:pl-6 lg:pl-12">
-          <Reveal delay={1}>
-            <h2 className="font-display text-4xl font-medium leading-[1.1] tracking-tight text-charcoal sm:text-5xl md:text-6xl text-balance">
-              {messages.invitationHeading}
-            </h2>
-          </Reveal>
+        <Reveal delay={1} className="mt-5">
+          <h2 className="font-display text-4xl font-medium leading-[1.1] tracking-tight text-charcoal sm:text-5xl text-balance">
+            {messages.invitationHeading}
+          </h2>
+        </Reveal>
 
-          <Reveal delay={2} className="mt-8">
-            <div className="h-px w-16 bg-champagne" />
-          </Reveal>
+        <Reveal delay={2} className="mt-7">
+          <p className="mx-auto max-w-md font-body text-base leading-[1.85] text-warm-gray md:text-lg">
+            {messages.invitationBody}
+          </p>
+        </Reveal>
 
-          <Reveal delay={3} className="mt-8">
-            <p className="max-w-md font-body text-base leading-[1.85] text-warm-gray md:text-lg">
-              {messages.invitationBody}
-            </p>
+        <Reveal delay={3} className="mt-12">
+          <div className="mx-auto h-px w-14 bg-champagne/70" />
+        </Reveal>
+
+        <Reveal delay={3} className="mt-12">
+          <p className="editorial-label text-champagne">{displayDate.day}</p>
+          <h3 className="mt-3 font-display text-3xl font-medium text-charcoal md:text-4xl">
+            Wedding Ceremony
+          </h3>
+          <p className="mt-3 font-display text-xl text-charcoal md:text-2xl">
+            {displayDate.date} {displayDate.month} {displayDate.year}
+          </p>
+        </Reveal>
+
+        <Reveal delay={4} className="mt-8">
+          <p className="font-display text-lg italic text-champagne">
+            Ceremony begins
+          </p>
+          <p className="mt-2 inline-flex items-center justify-center gap-2 font-body text-sm tracking-wide text-warm-gray">
+            <Clock size={14} strokeWidth={1.5} aria-hidden="true" />
+            {time}
+          </p>
+        </Reveal>
+
+        <Reveal delay={4} className="mt-10">
+          <p className="font-display text-2xl font-medium text-charcoal md:text-3xl">
+            {venue.name}
+          </p>
+          <p className="mx-auto mt-3 max-w-sm font-body text-sm leading-relaxed text-warm-gray">
+            {venue.address}
+          </p>
+        </Reveal>
+
+        {venue.mapsUrl && (
+          <Reveal delay={4} className="mt-12">
+            <a
+              href={venue.mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex w-full max-w-sm items-center justify-center gap-3 bg-charcoal px-6 py-4 font-body text-xs font-medium uppercase tracking-[0.22em] text-ivory transition-opacity hover:opacity-90"
+            >
+              Open in Google Maps
+              <ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />
+            </a>
           </Reveal>
-        </div>
+        )}
       </div>
     </section>
   )

@@ -43,12 +43,12 @@ export default function Closing() {
       </section>
 
       <footer className="border-t border-champagne/40 bg-ivory px-6 py-8 text-center">
-        <p className="font-display text-lg tracking-wide text-charcoal/80">
+        {/* <p className="font-display text-lg tracking-wide text-charcoal/80">
           {couple.partnerOne} &amp; {couple.partnerTwo}
         </p>
         <p className="mt-2 editorial-label text-[0.55rem]">
           Wedding Invitation
-        </p>
+        </p> */}
       </footer>
     </>
   )
