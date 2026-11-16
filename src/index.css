@@ -1,5 +1,13 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Aniyah';
+  src: url('/fonts/Aniyah.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --color-ivory: #f8f6f0;
   --color-soft-white: #fdfcf9;
@@ -12,6 +20,7 @@
   --color-champagne-soft: #f0ebe3;
 
   --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-script: 'Aniyah', 'Great Vibes', cursive;
   --font-body: 'DM Sans', system-ui, sans-serif;
 }
 
@@ -37,10 +46,14 @@
     box-sizing: border-box;
   }
 
-  img {
+  img,
+  video {
     max-width: 100%;
     height: auto;
     display: block;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-touch-callout: none;
   }
 
   ::selection {
@@ -52,6 +65,10 @@
 @layer utilities {
   .font-display {
     font-family: var(--font-display);
+  }
+
+  .font-script {
+    font-family: var(--font-script);
   }
 
   .font-body {

@@ -36,11 +36,8 @@ function PhotoFrame({ src, alt, className = '', aspect = 'aspect-[4/5]' }) {
 
 export default function Gallery() {
   const { photos, couple } = wedding
-  // Prefer secondary photos here; featured is used on the countdown page
   const [large = '', smallA = '', smallB = ''] = [
     ...(photos.secondary || []),
-    photos.hero,
-    photos.featured,
   ].filter(Boolean)
 
   return (
@@ -66,22 +63,28 @@ export default function Gallery() {
             />
           </Reveal>
 
-          <div className="col-span-12 flex flex-col gap-4 md:col-span-5 md:gap-6 md:pt-16">
-            <Reveal delay={1} variant="reveal-scale">
-              <PhotoFrame
-                src={smallA}
-                alt={`${couple.partnerOne} & ${couple.partnerTwo} — memory`}
-                aspect="aspect-[4/5]"
-              />
-            </Reveal>
-            <Reveal delay={2} variant="reveal-scale">
-              <PhotoFrame
-                src={smallB}
-                alt={`${couple.partnerOne} & ${couple.partnerTwo} — memory`}
-                aspect="aspect-[4/5]"
-              />
-            </Reveal>
-          </div>
+          {(smallA || smallB) && (
+            <div className="col-span-12 flex flex-col gap-4 md:col-span-5 md:gap-6 md:pt-16">
+              {smallA && (
+                <Reveal delay={1} variant="reveal-scale">
+                  <PhotoFrame
+                    src={smallA}
+                    alt={`${couple.partnerOne} & ${couple.partnerTwo} — memory`}
+                    aspect="aspect-[4/5]"
+                  />
+                </Reveal>
+              )}
+              {smallB && (
+                <Reveal delay={2} variant="reveal-scale">
+                  <PhotoFrame
+                    src={smallB}
+                    alt={`${couple.partnerOne} & ${couple.partnerTwo} — memory`}
+                    aspect="aspect-[4/5]"
+                  />
+                </Reveal>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </section>

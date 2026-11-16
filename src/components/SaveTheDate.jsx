@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import wedding from '../config/wedding'
 import Reveal from './Reveal'
 
@@ -52,16 +53,94 @@ function CountdownUnit({ value, label }) {
   )
 }
 
+function VideoCarousel({ videos, couple }) {
+  const [index, setIndex] = useState(0)
+  const videoRef = useRef(null)
+  const total = videos.length
+  const current = videos[index]
+
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el) return
+    el.pause()
+    el.currentTime = 0
+    el.load()
+  }, [index, current])
+
+  if (!total) return null
+
+  const goTo = (next) => {
+    setIndex((next + total) % total)
+  }
+
+  return (
+    <Reveal delay={1} variant="reveal-scale" className="mx-auto mt-10 w-full max-w-md md:mt-12">
+      <div className="relative border border-champagne/30 bg-black">
+        <video
+          key={current}
+          ref={videoRef}
+          src={current}
+          className="aspect-[9/16] w-full bg-black object-contain"
+          controls
+          controlsList="nodownload noremoteplayback"
+          disablePictureInPicture
+          playsInline
+          preload="metadata"
+          onContextMenu={(e) => e.preventDefault()}
+          aria-label={`${couple.partnerOne} & ${couple.partnerTwo} — moment ${index + 1}`}
+        />
+
+        {total > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => goTo(index - 1)}
+              className="absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/45 text-ivory transition hover:bg-black/65"
+              aria-label="Previous video"
+            >
+              <ChevronLeft className="h-5 w-5" strokeWidth={1.5} />
+            </button>
+            <button
+              type="button"
+              onClick={() => goTo(index + 1)}
+              className="absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/45 text-ivory transition hover:bg-black/65"
+              aria-label="Next video"
+            >
+              <ChevronRight className="h-5 w-5" strokeWidth={1.5} />
+            </button>
+          </>
+        )}
+      </div>
+
+      {total > 1 && (
+        <div className="mt-4 flex items-center justify-center gap-2">
+          {videos.map((src, i) => (
+            <button
+              key={src}
+              type="button"
+              onClick={() => setIndex(i)}
+              className={`h-1.5 rounded-full transition-all ${
+                i === index ? 'w-6 bg-champagne' : 'w-1.5 bg-ivory/35 hover:bg-ivory/55'
+              }`}
+              aria-label={`Show video ${i + 1}`}
+              aria-current={i === index ? 'true' : undefined}
+            />
+          ))}
+        </div>
+      )}
+    </Reveal>
+  )
+}
+
 export default function SaveTheDate() {
-  const { couple, photos, messages } = wedding
+  const { couple, messages, videos = [] } = wedding
   const target = getWeddingDate()
   const countdown = useCountdown(target)
   const showCountdown = target && countdown && !countdown.ended
-  const featurePhoto = photos.featured || photos.secondary?.[0]
 
   return (
     <section className="relative overflow-hidden">
-      {/* Upper photo band */}
+      {/* Upper moments band */}
       <div className="relative bg-charcoal px-6 pb-16 pt-16 md:px-10 md:pb-20 md:pt-20">
         <Reveal className="mx-auto max-w-xl text-center">
           <p className="editorial-label text-champagne">Our Moments</p>
@@ -70,19 +149,7 @@ export default function SaveTheDate() {
           </h2>
         </Reveal>
 
-        {featurePhoto && (
-          <Reveal delay={1} variant="reveal-scale" className="mx-auto mt-10 max-w-md md:mt-12">
-            <div className="overflow-hidden border border-champagne/30">
-              <img
-                src={featurePhoto}
-                alt={`${couple.partnerOne} & ${couple.partnerTwo}`}
-                className="aspect-[4/5] w-full object-cover object-center"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          </Reveal>
-        )}
+        <VideoCarousel videos={videos} couple={couple} />
       </div>
 
       {/* Countdown band */}

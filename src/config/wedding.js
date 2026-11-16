@@ -4,7 +4,7 @@
  */
 const wedding = {
   couple: {
-    partnerOne: 'Amal',
+    partnerOne: 'Amal Raj',
     partnerTwo: 'Anupama',
   },
 
@@ -20,9 +20,10 @@ const wedding = {
   },
 
   venue: {
-    name: 'Venue Name',
-    address: 'Full venue address, City, State',
-    mapsUrl: 'https://maps.google.com',
+    name: 'Munnas Convention Center',
+    address: 'Koyilandy, Kozhikode, Kerala 673305',
+    mapsUrl:
+      'https://www.google.com/maps/search/?api=1&query=Munnas+Convention+Centre+Koyilandy+Kozhikode',
   },
 
   messages: {
@@ -38,12 +39,22 @@ const wedding = {
   // Place couple photographs in /public/images/ and list paths here.
   photos: {
     // Hero full-bleed background
-    hero: '/images/1000333731.jpg',
+    hero: '/images/Hero-image.jpg',
     // Countdown / moments featured image
     featured: '/images/1000333729.jpg',
     // Gallery supporting images
-    secondary: ['/images/1000333730.jpg', '/images/1000333731.jpg'],
+    secondary: [
+      '/images/1000333730.jpg',
+      '/images/Hands-img.jpg',
+      '/images/1000333731.jpg',
+    ],
   },
+
+  // Place moment clips in /public/videos/
+  videos: [
+    '/videos/VID-20261116-WA0073.mp4',
+    '/videos/VID-20261116-WA0075.mp4',
+  ],
 
   music: {
     // Replace with your wedding song: place file in /public and update this path
@@ -53,9 +64,9 @@ const wedding = {
   },
 
   meta: {
-    title: 'Amal weds Anupama — Wedding Invitation',
+    title: 'Amal Raj weds Anupama — Wedding Invitation',
     description:
-      'You are invited to celebrate the wedding of Amal & Anupama. Save the date and join us for a beautiful beginning.',
+      'You are invited to celebrate the wedding of Amal Raj & Anupama. Save the date and join us for a beautiful beginning.',
     url: '',
     image: '/og-image.svg',
   },
