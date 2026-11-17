@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import wedding from '../config/wedding'
 import Reveal from './Reveal'
@@ -53,42 +53,95 @@ function CountdownUnit({ value, label }) {
   )
 }
 
-function VideoCarousel({ videos, couple }) {
+function MomentsCarousel({ items, couple }) {
   const [index, setIndex] = useState(0)
+  const [inView, setInView] = useState(false)
   const videoRef = useRef(null)
-  const total = videos.length
-  const current = videos[index]
+  const sectionRef = useRef(null)
+  const total = items.length
+  const current = items[index]
+  const isVideo = current?.type === 'video'
 
   useEffect(() => {
-    const el = videoRef.current
+    const el = sectionRef.current
     if (!el) return
-    el.pause()
-    el.currentTime = 0
-    el.load()
-  }, [index, current])
 
-  if (!total) return null
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.35 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // Reset only when the active slide changes
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el || !isVideo) return
+    el.currentTime = 0
+  }, [index, current, isVideo])
+
+  // Play / pause with scroll — resume from pause position
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el || !isVideo) return
+
+    if (!inView) {
+      el.pause()
+      return
+    }
+
+    const play = () => {
+      el.play().catch(() => {})
+    }
+    if (el.readyState >= 2) {
+      play()
+    } else {
+      el.addEventListener('loadeddata', play, { once: true })
+    }
+    return () => {
+      el.removeEventListener('loadeddata', play)
+      el.pause()
+    }
+  }, [index, current, isVideo, inView])
+
+  if (!total || !current) return null
 
   const goTo = (next) => {
     setIndex((next + total) % total)
   }
 
+  const label = `${couple.partnerOne} & ${couple.partnerTwo} — moment ${index + 1}`
+
   return (
-    <Reveal delay={1} variant="reveal-scale" className="mx-auto mt-10 w-full max-w-md md:mt-12">
-      <div className="relative border border-champagne/30 bg-black">
-        <video
-          key={current}
-          ref={videoRef}
-          src={current}
-          className="aspect-[9/16] w-full bg-black object-contain"
-          controls
-          controlsList="nodownload noremoteplayback"
-          disablePictureInPicture
-          playsInline
-          preload="metadata"
-          onContextMenu={(e) => e.preventDefault()}
-          aria-label={`${couple.partnerOne} & ${couple.partnerTwo} — moment ${index + 1}`}
-        />
+    <Reveal delay={1} variant="reveal-scale" className="mx-auto mt-10 w-full max-w-md md:mt-12 md:max-w-xs">
+      <div ref={sectionRef} className="relative border border-champagne/30 bg-black">
+        {isVideo ? (
+          <video
+            key={current.src}
+            ref={videoRef}
+            src={current.src}
+            className="aspect-[9/16] w-full bg-black object-contain"
+            loop
+            controls
+            controlsList="nodownload noremoteplayback"
+            disablePictureInPicture
+            playsInline
+            preload="metadata"
+            onContextMenu={(e) => e.preventDefault()}
+            aria-label={label}
+          />
+        ) : (
+          <img
+            key={current.src}
+            src={current.src}
+            alt={label}
+            className="aspect-[9/16] w-full bg-black object-contain"
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />
+        )}
 
         {total > 1 && (
           <>
@@ -96,7 +149,7 @@ function VideoCarousel({ videos, couple }) {
               type="button"
               onClick={() => goTo(index - 1)}
               className="absolute left-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/45 text-ivory transition hover:bg-black/65"
-              aria-label="Previous video"
+              aria-label="Previous moment"
             >
               <ChevronLeft className="h-5 w-5" strokeWidth={1.5} />
             </button>
@@ -104,7 +157,7 @@ function VideoCarousel({ videos, couple }) {
               type="button"
               onClick={() => goTo(index + 1)}
               className="absolute right-2 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/45 text-ivory transition hover:bg-black/65"
-              aria-label="Next video"
+              aria-label="Next moment"
             >
               <ChevronRight className="h-5 w-5" strokeWidth={1.5} />
             </button>
@@ -114,15 +167,15 @@ function VideoCarousel({ videos, couple }) {
 
       {total > 1 && (
         <div className="mt-4 flex items-center justify-center gap-2">
-          {videos.map((src, i) => (
+          {items.map((item, i) => (
             <button
-              key={src}
+              key={item.src}
               type="button"
               onClick={() => setIndex(i)}
               className={`h-1.5 rounded-full transition-all ${
                 i === index ? 'w-6 bg-champagne' : 'w-1.5 bg-ivory/35 hover:bg-ivory/55'
               }`}
-              aria-label={`Show video ${i + 1}`}
+              aria-label={`Show moment ${i + 1}`}
               aria-current={i === index ? 'true' : undefined}
             />
           ))}
@@ -133,8 +186,8 @@ function VideoCarousel({ videos, couple }) {
 }
 
 export default function SaveTheDate() {
-  const { couple, messages, videos = [] } = wedding
-  const target = getWeddingDate()
+  const { couple, messages, moments = [] } = wedding
+  const target = useMemo(() => getWeddingDate(), [])
   const countdown = useCountdown(target)
   const showCountdown = target && countdown && !countdown.ended
 
@@ -149,7 +202,7 @@ export default function SaveTheDate() {
           </h2>
         </Reveal>
 
-        <VideoCarousel videos={videos} couple={couple} />
+        <MomentsCarousel items={moments} couple={couple} />
       </div>
 
       {/* Countdown band */}

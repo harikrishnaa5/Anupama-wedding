@@ -50,10 +50,11 @@ const wedding = {
     ],
   },
 
-  // Place moment clips in /public/videos/
-  videos: [
-    '/videos/VID-20261116-WA0073.mp4',
-    '/videos/VID-20261116-WA0075.mp4',
+  // Moments slider — videos and images, shown one at a time
+  moments: [
+    { type: 'video', src: '/videos/VID-20261116-WA0073.mp4' },
+    { type: 'video', src: '/videos/VID-20261116-WA0075.mp4' },
+    { type: 'image', src: '/images/ai-cam.jpg' },
   ],
 
   music: {
