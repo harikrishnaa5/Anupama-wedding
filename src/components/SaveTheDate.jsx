@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import wedding from '../config/wedding'
 import Reveal from './Reveal'
+import { LeafCorner } from './BotanicalDecor'
 
 function getWeddingDate() {
   const { dateISO, timeISO } = wedding
@@ -173,7 +174,7 @@ function MomentsCarousel({ items, couple }) {
               type="button"
               onClick={() => setIndex(i)}
               className={`h-1.5 rounded-full transition-all ${
-                i === index ? 'w-6 bg-champagne' : 'w-1.5 bg-ivory/35 hover:bg-ivory/55'
+                i === index ? 'w-6 bg-champagne' : 'w-1.5 bg-charcoal/25 hover:bg-charcoal/45'
               }`}
               aria-label={`Show moment ${i + 1}`}
               aria-current={i === index ? 'true' : undefined}
@@ -186,18 +187,45 @@ function MomentsCarousel({ items, couple }) {
 }
 
 export default function SaveTheDate() {
-  const { couple, messages, moments = [] } = wedding
+  const { couple, messages, moments = [], photos } = wedding
+  const sectionBg = photos.invitationBg || '/images/background-img.png'
   const target = useMemo(() => getWeddingDate(), [])
   const countdown = useCountdown(target)
   const showCountdown = target && countdown && !countdown.ended
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden bg-[#f3eee6]">
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('${sectionBg}')` }}
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-[#fdfcf9]/55"
+        aria-hidden="true"
+      />
+
+      <LeafCorner className="botanical-drift pointer-events-none absolute left-2 top-2 h-28 w-28 text-sage/70 md:left-6 md:top-6 md:h-40 md:w-40" />
+      <LeafCorner
+        flip
+        className="botanical-drift pointer-events-none absolute right-2 top-2 h-28 w-28 text-champagne md:right-6 md:top-6 md:h-40 md:w-40"
+        style={{ animationDelay: '1.6s' }}
+      />
+      <LeafCorner
+        className="botanical-drift pointer-events-none absolute bottom-2 left-2 h-28 w-28 rotate-180 text-champagne md:bottom-6 md:left-6 md:h-40 md:w-40"
+        style={{ animationDelay: '2.8s' }}
+      />
+      <LeafCorner
+        flip
+        className="botanical-drift pointer-events-none absolute bottom-2 right-2 h-28 w-28 rotate-180 text-sage/70 md:bottom-6 md:right-6 md:h-40 md:w-40"
+        style={{ animationDelay: '3.6s' }}
+      />
+
       {/* Upper moments band */}
-      <div className="relative bg-charcoal px-6 pb-16 pt-16 md:px-10 md:pb-20 md:pt-20">
+      <div className="relative px-6 pb-12 pt-16 md:px-10 md:pb-18 md:pt-20">
         <Reveal className="mx-auto max-w-xl text-center">
           <p className="editorial-label text-champagne">Our Moments</p>
-          <h2 className="mt-4 font-display text-3xl font-medium text-ivory sm:text-4xl md:text-5xl text-balance">
+          <h2 className="mt-4 font-display text-3xl font-medium text-charcoal sm:text-4xl md:text-5xl text-balance">
             A glimpse of our forever
           </h2>
         </Reveal>
@@ -206,7 +234,7 @@ export default function SaveTheDate() {
       </div>
 
       {/* Countdown band */}
-      <div className="bg-ivory px-6 py-16 md:px-10 md:py-20">
+      <div className="relative px-6 pb-8 pt-16 md:px-10 md:pb-10 md:pt-20">
         <div className="mx-auto max-w-xl text-center">
           <Reveal>
             <p className="font-display text-lg italic text-champagne md:text-xl">

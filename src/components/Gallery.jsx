@@ -36,13 +36,40 @@ function PhotoFrame({ src, alt, className = '', aspect = 'aspect-[4/5]' }) {
 
 export default function Gallery() {
   const { photos, couple } = wedding
+  const sectionBg = photos.invitationBg || '/images/background-img.png'
   const [large = '', smallA = '', smallB = ''] = [
     ...(photos.secondary || []),
   ].filter(Boolean)
 
   return (
-    <section className="relative overflow-hidden bg-ivory">
-      <div className="mx-auto max-w-5xl px-6 py-20 md:px-10 md:py-28">
+    <section className="relative overflow-hidden bg-[#f3eee6]">
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('${sectionBg}')` }}
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-[#fdfcf9]/55"
+        aria-hidden="true"
+      />
+
+      <LeafCorner className="botanical-drift pointer-events-none absolute left-2 top-2 h-28 w-28 text-sage/70 md:left-6 md:top-6 md:h-40 md:w-40" />
+      <LeafCorner
+        flip
+        className="botanical-drift pointer-events-none absolute right-2 top-2 h-28 w-28 text-champagne md:right-6 md:top-6 md:h-40 md:w-40"
+        style={{ animationDelay: '1.6s' }}
+      />
+      <LeafCorner
+        className="botanical-drift pointer-events-none absolute bottom-2 left-2 h-28 w-28 rotate-180 text-champagne md:bottom-6 md:left-6 md:h-40 md:w-40"
+        style={{ animationDelay: '2.8s' }}
+      />
+      <LeafCorner
+        flip
+        className="botanical-drift pointer-events-none absolute bottom-2 right-2 h-28 w-28 rotate-180 text-sage/70 md:bottom-6 md:right-6 md:h-40 md:w-40"
+        style={{ animationDelay: '3.6s' }}
+      />
+
+      <div className="relative mx-auto max-w-5xl px-6 pb-20 pt-8 md:px-10 md:pb-28 md:pt-10">
         <Reveal className="mb-12 text-center md:mb-16">
           <p className="editorial-label">Memories</p>
           <h2 className="mt-4 font-display text-3xl font-medium text-charcoal md:text-4xl">

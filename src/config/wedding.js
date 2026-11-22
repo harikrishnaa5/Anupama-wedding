@@ -42,6 +42,10 @@ const wedding = {
     hero: '/images/Hero-image.jpg',
     // Countdown / moments featured image
     featured: '/images/1000333729.jpg',
+    // Save-the-date letter / card
+    saveTheDate: '/images/letter.png',
+    // Invitation section background
+    invitationBg: '/images/background-img.png',
     // Gallery supporting images
     secondary: [
       '/images/1000333730.jpg',

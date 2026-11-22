@@ -1,14 +1,45 @@
 import { ArrowRight, Clock } from 'lucide-react'
 import wedding from '../config/wedding'
 import Reveal from './Reveal'
-import { BotanicalSpray } from './BotanicalDecor'
+import { BotanicalSpray, LeafCorner, OrnamentDivider } from './BotanicalDecor'
 
 export default function Invitation() {
-  const { messages, displayDate, time, venue } = wedding
+  const { messages, displayDate, time, venue, photos } = wedding
+  const saveTheDate = photos.saveTheDate
+  const invitationBg = photos.invitationBg || '/images/background-img.png'
 
   return (
-    <section className="relative overflow-hidden bg-soft-white">
-      <div className="mx-auto max-w-xl px-6 py-20 text-center md:px-10 md:py-28">
+    <section className="relative overflow-hidden bg-[#f3eee6]">
+      {/* Full-bleed invitation background image */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url('${invitationBg}')` }}
+        aria-hidden="true"
+      />
+      {/* Soft veil so type stays readable */}
+      <div
+        className="pointer-events-none absolute inset-0 bg-[#fdfcf9]/55"
+        aria-hidden="true"
+      />
+
+      {/* Corner botanicals */}
+      <LeafCorner className="botanical-drift pointer-events-none absolute left-2 top-2 h-28 w-28 text-sage/70 md:left-6 md:top-6 md:h-40 md:w-40" />
+      <LeafCorner
+        flip
+        className="botanical-drift pointer-events-none absolute right-2 top-2 h-28 w-28 text-champagne md:right-6 md:top-6 md:h-40 md:w-40"
+        style={{ animationDelay: '1.6s' }}
+      />
+      <LeafCorner
+        className="botanical-drift pointer-events-none absolute bottom-2 left-2 h-28 w-28 rotate-180 text-champagne md:bottom-6 md:left-6 md:h-40 md:w-40"
+        style={{ animationDelay: '2.8s' }}
+      />
+      <LeafCorner
+        flip
+        className="botanical-drift pointer-events-none absolute bottom-2 right-2 h-28 w-28 rotate-180 text-sage/70 md:bottom-6 md:right-6 md:h-40 md:w-40"
+        style={{ animationDelay: '3.6s' }}
+      />
+
+      <div className="relative mx-auto max-w-3xl px-6 py-20 text-center md:px-10 md:py-28">
         <Reveal>
           <BotanicalSpray className="mx-auto mb-8 h-10 w-44 text-champagne/70" />
           <p className="editorial-label text-champagne">The Invitation</p>
@@ -21,33 +52,26 @@ export default function Invitation() {
         </Reveal>
 
         <Reveal delay={2} className="mt-7">
-          <p className="mx-auto max-w-md font-body text-base leading-[1.85] text-warm-gray md:text-lg">
+          <p className="mx-auto max-w-md font-display text-xl italic leading-relaxed text-warm-gray md:text-2xl">
             {messages.invitationBody}
           </p>
         </Reveal>
 
-        <Reveal delay={3} className="mt-12">
-          <div className="mx-auto h-px w-14 bg-champagne/70" />
-        </Reveal>
+        <Reveal delay={3} className="mt-14">
+          <OrnamentDivider className="text-champagne" />
 
-        <Reveal delay={3} className="mt-12">
-          <p className="editorial-label text-champagne">{displayDate.day}</p>
-          <h3 className="mt-3 font-display text-3xl font-medium text-charcoal md:text-4xl">
-            Wedding Ceremony
-          </h3>
-          <p className="mt-3 font-display text-xl text-charcoal md:text-2xl">
-            {displayDate.date} {displayDate.month} {displayDate.year}
-          </p>
-        </Reveal>
-
-        <Reveal delay={4} className="mt-8">
-          <p className="font-display text-lg italic text-champagne">
-            Ceremony begins
-          </p>
-          <p className="mt-2 inline-flex items-center justify-center gap-2 font-body text-sm tracking-wide text-warm-gray">
-            <Clock size={14} strokeWidth={1.5} aria-hidden="true" />
-            {time}
-          </p>
+          {saveTheDate && (
+            <div className="mx-auto mt-14 w-full max-w-[220px] sm:max-w-[260px] md:max-w-[350px]">
+              <img
+                src={saveTheDate}
+                alt={`Save the date — ${displayDate.date} ${displayDate.month} ${displayDate.year}`}
+                className="h-auto w-full bg-transparent object-contain"
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+              />
+            </div>
+          )}
         </Reveal>
 
         <Reveal delay={4} className="mt-10">

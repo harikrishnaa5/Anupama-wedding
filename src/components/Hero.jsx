@@ -123,9 +123,9 @@ export default function Hero() {
       {/* Text — no container, sits over the bottom gradient */}
       <div className="absolute inset-x-0 bottom-0 z-10 px-6 pb-6 sm:px-10 sm:pb-8 md:pb-9">
         <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-          <p className="editorial-label hero-enter hero-enter-1 bg-champagne/90 px-3 !text-charcoal">
+          {/* <p className="editorial-label hero-enter hero-enter-1 bg-champagne/90 px-3 !text-charcoal">
             {messages.intro}
-          </p>
+          </p> */}
 
           <div className="hero-enter hero-enter-2 mt-4 sm:mt-5">
             <h1 className="font-script text-[1.65rem] font-normal leading-[1.15] tracking-normal text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.7)] sm:text-3xl md:text-4xl">
