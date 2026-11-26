@@ -57,6 +57,7 @@ const wedding = {
   // Moments slider — videos and images, shown one at a time
   moments: [
     { type: 'video', src: '/videos/VID-20261116-WA0073.mp4' },
+    { type: 'video', src: '/videos/video2.MOV' },
     { type: 'image', src: '/images/ai-cam.jpg' },
   ],
 
