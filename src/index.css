@@ -54,6 +54,18 @@
     -webkit-user-drag: none;
     user-select: none;
     -webkit-touch-callout: none;
+    /* Deterrent only — does not stop OS screenshots / recording */
+    -webkit-user-select: none;
+  }
+
+  /* Brief white flash if PrintScreen is detected (deterrent, not a block) */
+  html.capture-deterrent body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: #fff;
+    pointer-events: none;
   }
 
   ::selection {

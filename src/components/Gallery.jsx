@@ -12,6 +12,7 @@ function PhotoFrame({ src, alt, className = '', aspect = 'aspect-[4/5]' }) {
           className="h-full w-full object-cover transition-transform duration-700 ease-out hover:scale-[1.03]"
           loading="lazy"
           decoding="async"
+          draggable={false}
         />
       </div>
     )

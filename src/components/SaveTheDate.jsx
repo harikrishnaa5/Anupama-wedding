@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import wedding from '../config/wedding'
 import Reveal from './Reveal'
 import { LeafCorner } from './BotanicalDecor'
+import { notifyVideoPlaying, notifyVideoStopped } from '../lib/musicBridge'
 
 function getWeddingDate() {
   const { dateISO, timeISO } = wedding
@@ -59,6 +60,7 @@ function MomentsCarousel({ items, couple }) {
   const [inView, setInView] = useState(false)
   const videoRef = useRef(null)
   const sectionRef = useRef(null)
+  const stopMusicTimerRef = useRef(null)
   const total = items.length
   const current = items[index]
   const isVideo = current?.type === 'video'
@@ -75,6 +77,41 @@ function MomentsCarousel({ items, couple }) {
     return () => observer.disconnect()
   }, [])
 
+  // Pause bg music while a moments video is audible
+  useEffect(() => {
+    const el = videoRef.current
+    if (!el || !isVideo) {
+      notifyVideoStopped()
+      return
+    }
+
+    const onPlay = () => {
+      window.clearTimeout(stopMusicTimerRef.current)
+      notifyVideoPlaying()
+    }
+    const onPauseOrEnd = () => {
+      window.clearTimeout(stopMusicTimerRef.current)
+      // Debounce so slide changes don't briefly resume music
+      stopMusicTimerRef.current = window.setTimeout(() => {
+        notifyVideoStopped()
+      }, 180)
+    }
+
+    el.addEventListener('play', onPlay)
+    el.addEventListener('playing', onPlay)
+    el.addEventListener('pause', onPauseOrEnd)
+    el.addEventListener('ended', onPauseOrEnd)
+
+    return () => {
+      el.removeEventListener('play', onPlay)
+      el.removeEventListener('playing', onPlay)
+      el.removeEventListener('pause', onPauseOrEnd)
+      el.removeEventListener('ended', onPauseOrEnd)
+      window.clearTimeout(stopMusicTimerRef.current)
+      notifyVideoStopped()
+    }
+  }, [index, current, isVideo])
+
   // Reset only when the active slide changes
   useEffect(() => {
     const el = videoRef.current
@@ -82,13 +119,15 @@ function MomentsCarousel({ items, couple }) {
     el.currentTime = 0
   }, [index, current, isVideo])
 
-  // Play / pause with scroll — resume from pause position
+  // Play / pause with scroll — resume music when scrolled away
   useEffect(() => {
     const el = videoRef.current
     if (!el || !isVideo) return
 
     if (!inView) {
       el.pause()
+      window.clearTimeout(stopMusicTimerRef.current)
+      notifyVideoStopped()
       return
     }
 
@@ -103,6 +142,8 @@ function MomentsCarousel({ items, couple }) {
     return () => {
       el.removeEventListener('loadeddata', play)
       el.pause()
+      window.clearTimeout(stopMusicTimerRef.current)
+      notifyVideoStopped()
     }
   }, [index, current, isVideo, inView])
 

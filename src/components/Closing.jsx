@@ -58,7 +58,7 @@ export default function Closing() {
           <Reveal delay={3} className="mt-12">
             <OrnamentDivider className="text-champagne" />
             <p className="mt-8 editorial-label">With love</p>
-            <p className="mt-4 font-display text-3xl font-medium text-charcoal md:text-4xl">
+            <p className="mt-7 font-script text-1xl font-normal italic leading-snug text-charcoal md:text-2xl">
               {couple.partnerOne} &amp; {couple.partnerTwo}
             </p>
           </Reveal>

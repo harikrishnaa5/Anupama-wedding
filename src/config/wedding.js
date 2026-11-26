@@ -57,14 +57,12 @@ const wedding = {
   // Moments slider — videos and images, shown one at a time
   moments: [
     { type: 'video', src: '/videos/VID-20261116-WA0073.mp4' },
-    { type: 'video', src: '/videos/VID-20261116-WA0075.mp4' },
     { type: 'image', src: '/images/ai-cam.jpg' },
   ],
 
   music: {
-    // Replace with your wedding song: place file in /public and update this path
-    // Supports mp3, wav, etc. (e.g. '/music.mp3')
-    src: '/music.wav',
+    src: '/music/lathika.mp3',
+    startAt: 0,
     enabled: true,
   },
 

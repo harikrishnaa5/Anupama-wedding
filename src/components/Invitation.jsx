@@ -1,4 +1,4 @@
-import { ArrowRight, Clock } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import wedding from '../config/wedding'
 import Reveal from './Reveal'
 import { BotanicalSpray, LeafCorner, OrnamentDivider } from './BotanicalDecor'
@@ -74,28 +74,60 @@ export default function Invitation() {
           )}
         </Reveal>
 
-        <Reveal delay={4} className="mt-10">
-          <p className="font-display text-2xl font-medium text-charcoal md:text-3xl">
-            {venue.name}
-          </p>
-          <p className="mx-auto mt-3 max-w-sm font-body text-sm leading-relaxed text-warm-gray">
-            {venue.address}
-          </p>
-        </Reveal>
+        <Reveal delay={4} className="mt-14">
+          <OrnamentDivider className="text-champagne" />
 
-        {venue.mapsUrl && (
-          <Reveal delay={4} className="mt-12">
-            <a
-              href={venue.mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex w-full max-w-sm items-center justify-center gap-3 bg-charcoal px-6 py-4 font-body text-xs font-medium uppercase tracking-[0.22em] text-ivory transition-opacity hover:opacity-90"
-            >
-              Open in Google Maps
-              <ArrowRight size={14} strokeWidth={1.5} aria-hidden="true" />
-            </a>
-          </Reveal>
-        )}
+          <div className="relative mx-auto mt-8 max-w-md px-6 py-8 sm:px-8">
+            <div
+              className="pointer-events-none absolute inset-0 border border-champagne/55"
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute inset-[5px] border border-champagne/30"
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-b from-champagne/20 via-soft-white/40 to-champagne/15"
+              aria-hidden="true"
+            />
+
+            <div className="relative flex flex-col items-center text-center">
+              <p className="editorial-label text-champagne">The Venue</p>
+
+              <img
+                src="/images/pin.png"
+                alt=""
+                aria-hidden="true"
+                className="mt-4 h-8 w-auto object-contain"
+                draggable={false}
+              />
+
+              <p className="mt-4 font-display text-2xl font-medium leading-snug tracking-tight text-charcoal md:text-3xl">
+                {venue.name}
+              </p>
+              <span
+                className="mt-3 h-px w-16 bg-champagne"
+                aria-hidden="true"
+              />
+
+              <p className="mx-auto mt-4 max-w-xs font-body text-sm leading-relaxed text-charcoal/75 md:text-base">
+                {venue.address}
+              </p>
+
+              {venue.mapsUrl && (
+                <a
+                  href={venue.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex items-center justify-center gap-2 border border-charcoal/80 bg-charcoal px-5 py-3 font-body text-[0.65rem] font-medium uppercase tracking-[0.22em] text-ivory transition-opacity hover:opacity-90"
+                >
+                  Open in Google Maps
+                  <ArrowRight size={13} strokeWidth={1.5} aria-hidden="true" />
+                </a>
+              )}
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
